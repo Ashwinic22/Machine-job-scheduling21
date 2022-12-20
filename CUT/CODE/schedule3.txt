@@ -1,2 +1,0 @@
-- Schedule for machine 3 
-J001:1:60
