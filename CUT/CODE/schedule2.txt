@@ -1,2 +1,0 @@
-- Schedule for machine 2 
-J002:1:30
