@@ -1,47 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#define MAX 100
-// define the structure for job
-typedef struct
-{
-    char jobNo[10];
-    char description[20];
-    char machineNo[10];
-    int duration;
-    char clientName[30];
-} job;
-
-// define the structure for schedule
-typedef struct
-{
-    char jobNo[10];
-    char machineNo[10];
-    int start;
-    int end;
-} schedule;
-
-// define the structure for jobSchedule
-typedef struct
-{
-    char jobNo[10];
-    char description[20];
-    char machineNo[10];
-    int duration;
-    char clientName[30];
-    int start;
-    int end;
-} jobSchedule;
-
-// define structure to hold jobSchedules for each machine
-typedef struct
-{
-    int machineNo;
-    jobSchedule jobScheduleList[MAX];
-    int jobScheduleCount;
-} machineSchedule;
+#include "../HEADER/scheduler.h"
 
 // read file and add it to joblist
 void readFile(job *jobList, int *jobCount, char *fileName)
@@ -179,13 +136,13 @@ void writeSchedule(
 {
     FILE *fp;
     int i;
+    char fileName[30];
+    int j;
     for (i = 0; i < machineScheduleCount; i++)
     {
-        char fileName[20];
-        sprintf(fileName, "schedule%d.txt", machineScheduleList[i].machineNo);
+        sprintf(fileName, "../DATA/schedule%d.txt", machineScheduleList[i].machineNo);
         fp = fopen(fileName, "w");
         fprintf(fp, "- Schedule for machine %d\n", machineScheduleList[i].machineNo);
-        int j;
         for (j = 0; j < machineScheduleList[i].jobScheduleCount; j++)
         {
             fprintf(fp, "%s:%d:%d\n", machineScheduleList[i].jobScheduleList[j].jobNo, machineScheduleList[i].jobScheduleList[j].start, machineScheduleList[i].jobScheduleList[j].end);
@@ -206,7 +163,7 @@ int main(int argc, char *argv[])
         readFile(jobList, &jobCount, argv[i]);
     }
     // find invalid jobs and write them to invalidJobs and display them
-    findDisplayAndRemoveInvalidJobs(jobList, &jobCount, "invalidJobs.txt");
+    findDisplayAndRemoveInvalidJobs(jobList, &jobCount, "../DATA/invalidJobs.txt");
     // initialize schedule list
     schedule scheduleList[MAX]= {0};
     // initialize schedule count
